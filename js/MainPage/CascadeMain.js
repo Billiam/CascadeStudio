@@ -113,7 +113,7 @@ function initialize(projectContent = null) {
 
             // Import Typescript Intellisense Definitions for the relevant libraries...
             var extraLibs = [];
-            let prefix = window.location.href.startsWith("https://zalo.github.io/") ? "/CascadeStudio" : "";
+            let prefix = window.location.host.endsWith(".github.io") ? "/CascadeStudio" : "";
             // opencascade.js Typescript Definitions...
             fetch(prefix + "/node_modules/opencascade.js/dist/oc.d.ts").then((response) => {
                 response.text().then(function (text) {
