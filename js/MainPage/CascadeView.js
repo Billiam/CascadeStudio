@@ -272,7 +272,18 @@ var CascadeEnvironment = function (goldenContainer) {
   /**  Save the current shape to an ASCII .stl */
   this.saveShapeSTL = async () => {
     this.stlExporter = new THREE.STLExporter();
-    let result = this.stlExporter.parse(this.mainObject);
+
+    const rotatedExport = this.mainObject.clone(true)
+    rotatedExport.traverse(object => {
+      if ( object.isMesh ) {
+        object.geometry = object.geometry.clone()
+        object.geometry.rotateX(Math.PI/2)
+        object.visible = false
+        object.geometry.visible = false
+      }
+    })
+    const result = this.stlExporter.parse(rotatedExport);
+
     if (window.showSaveFilePicker) {
       const fileHandle = await getNewFileHandle("STL files", "text/plain", "stl");
       writeFile(fileHandle, result).then(() => {
